@@ -79,7 +79,11 @@ export = class Alipay {
   }
 
   private validateBasicParams (method: MethodType, publicParams: AlipayPublicArgs): AlipayPublicArgs {
-    const params: AlipayPublicArgs = { ...this.options, ... publicParams, method }
+    let newOptions = { ...this.options }
+    // remove keys from basic parameters
+    delete newOptions.appPrivKeyFile
+    delete newOptions.alipayPubKeyFile
+    const params: AlipayPublicArgs = { ...newOptions, ...publicParams, method }
 
     return Validator.validateBasicParams(params)
   }
