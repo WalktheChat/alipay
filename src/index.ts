@@ -78,7 +78,7 @@ export = class Alipay {
     return this.options.notifyUrl
   }
 
-  private validateBasicParams (method: MethodType, publicParams: AlipayPublicArgs): AlipayPublicArgs {
+  private validateBasicParams(method: MethodType, publicParams: AlipayPublicArgs): AlipayPublicArgs {
     let newOptions = { ...this.options }
     // remove keys from basic parameters
     delete newOptions.appPrivKeyFile
@@ -88,7 +88,7 @@ export = class Alipay {
     return Validator.validateBasicParams(params)
   }
 
-  private validateAPIParams (method: MethodType, options: AlipayAPIArgs): AlipayAPIArgs {
+  private validateAPIParams(method: MethodType, options: AlipayAPIArgs): AlipayAPIArgs {
     return Validator.validateAPIParams(method, options)
   }
 
@@ -125,7 +125,7 @@ export = class Alipay {
   }
 
   public makeNotifyResponse(params: AlipayNotifyArgs): ApiResponse {
-    this.validateAPIParams(MethodType.NOTIFY_RESPONSE, params)
+    // this.validateAPIParams(MethodType.NOTIFY_RESPONSE, params)
     const resp: AlipayVerifySignArgs = { sign: params.sign, async_notify_response: params, sign_type: params.sign_type }
     const valid = utils.verifySign(this.publicKey, resp, ['sign', 'sign_type'], params)
     const code = valid ? AlipayNormalResponseCode.OK : AlipayNormalResponseCode.SIGNATURE_ERROR
@@ -156,7 +156,7 @@ export = class Alipay {
           return acc + k + '=' + encodeURIComponent(v) + '&'
         },
         ''
-        ).slice(0, -1)
+      ).slice(0, -1)
     const data = value + '&sign=' + encodeURIComponent(sign)
     return { code: 0, message: alipayResponseMessage[0], data }
   }
@@ -171,7 +171,7 @@ export = class Alipay {
         return `${acc}${k}=${encodeURIComponent(v)}&`
       },
       ''
-      ).slice(0, -1)
+    ).slice(0, -1)
     const data = `${value}&sign=${encodeURIComponent(sign)}`
     return { code: 0, message: alipayResponseMessage[0], data }
   }
@@ -191,7 +191,7 @@ export = class Alipay {
         return acc + k + '=' + encodeURIComponent(v) + '&'
       },
       ''
-      ).slice(0, -1)
+    ).slice(0, -1)
 
     const data = value + '&sign=' + encodeURIComponent(sign)
     return { code: AlipayNormalResponseCode.OK, message: alipayResponseMessage[AlipayNormalResponseCode.OK], data }
